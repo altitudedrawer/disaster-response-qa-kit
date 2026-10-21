@@ -1,0 +1,12 @@
+[project]
+name = "disaster-response-qa-kit"
+version = "0.1.0"
+description = "Which cities are within 100 km of M5+ earthquakes? A small geodesic pipeline with a heavy test/DevOps wrapper."
+requires-python = ">=3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = [
+    "contract: hits a live ArcGIS Feature Service (auto-skipped without credentials)",
+]

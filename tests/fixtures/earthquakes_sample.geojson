@@ -1,0 +1,1910 @@
+{
+ "type": "FeatureCollection",
+ "metadata": {
+  "source": "USGS 4.5_month feed snapshot 2026-10-21 UTC + synthetic cases",
+  "count": 100
+ },
+ "features": [
+  {
+   "type": "Feature",
+   "id": "us7000tixc",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -71.8981,
+     -22.3472,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5.2,
+    "place": "170 km WNW of Mejillones, Chile",
+    "time": 1789991309030,
+    "updated": 1792438196040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us7000tixp",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     132.0918,
+     32.5581,
+     46.166
+    ]
+   },
+   "properties": {
+    "mag": 4.7,
+    "place": "40 km E of Nobeoka, Japan",
+    "time": 1789997912301,
+    "updated": 1792438272040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us7000tj0z",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -24.1611,
+     -56.5177,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5,
+    "place": "South Sandwich Islands region",
+    "time": 1790026624841,
+    "updated": 1790393696040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us7000tj1b",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     142.0357,
+     37.5254,
+     35
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "91 km E of Namie, Japan",
+    "time": 1790029799302,
+    "updated": 1790394301040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us7000tj37",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.5246,
+     -8.3915,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.7,
+    "place": "52 km NNW of Ende, Indonesia",
+    "time": 1790048185728,
+    "updated": 1791777077040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us7000tj3k",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     142.4066,
+     23.0397,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5.1,
+    "place": "Volcano Islands, Japan region",
+    "time": 1790054304266,
+    "updated": 1791816636040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us7000tj3v",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     124.2022,
+     11.0904,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "18 km ENE of Nailong, Philippines",
+    "time": 1790059689697,
+    "updated": 1791816118805,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us7000tj5n",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     156.5233,
+     50.4562,
+     84.135
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "37 km SE of Severo-Kuril\u2019sk, Russia",
+    "time": 1790085375241,
+    "updated": 1792080494040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000twzi",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -75.8291,
+     3.9539,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "25 km WSW of Roncesvalles, Colombia",
+    "time": 1790115146626,
+    "updated": 1790632569040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tydi",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -108.4397,
+     -34.9473,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "southern East Pacific Rise",
+    "time": 1790161767721,
+    "updated": 1792095316040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000txb3",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -177.7259,
+     -30.2246,
+     35
+    ]
+   },
+   "properties": {
+    "mag": 4.9,
+    "place": "Kermadec Islands, New Zealand",
+    "time": 1790248104784,
+    "updated": 1792397462040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000txc1",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -93.2081,
+     14.184,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "103 km SW of Puerto Madero, Mexico",
+    "time": 1790258562494,
+    "updated": 1791650920040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000txf9",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     152.2545,
+     -4.6457,
+     100.83
+    ]
+   },
+   "properties": {
+    "mag": 5.1,
+    "place": "33 km S of Kokopo, Papua New Guinea",
+    "time": 1790272848142,
+    "updated": 1791391633040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000txha",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -177.6664,
+     -29.446,
+     48.816
+    ]
+   },
+   "properties": {
+    "mag": 5,
+    "place": "Kermadec Islands, New Zealand",
+    "time": 1790288579146,
+    "updated": 1791770237040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000txnq",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     120.3702,
+     -8.2237,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.8,
+    "place": "44 km NNW of Ruteng, Indonesia",
+    "time": 1790365168779,
+    "updated": 1792534872040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000txpa",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -179.9919,
+     -24.0533,
+     482.813
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "south of the Fiji Islands",
+    "time": 1790369012619,
+    "updated": 1790372290040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tz53",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     168.4525,
+     -21.318,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "64 km ENE of Tadine, New Caledonia",
+    "time": 1790372849616,
+    "updated": 1792294319040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tz5a",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     168.6139,
+     -21.1756,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.7,
+    "place": "86 km ENE of Tadine, New Caledonia",
+    "time": 1790380698731,
+    "updated": 1792359815040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000txuu",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     168.468,
+     -21.2269,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.7,
+    "place": "70 km ENE of Tadine, New Caledonia",
+    "time": 1790385436505,
+    "updated": 1791927803040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tz2c",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     150.4766,
+     45.1716,
+     47.524
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "204 km E of Kuril\u2019sk, Russia",
+    "time": 1790388373162,
+    "updated": 1791928605040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000txrf",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     168.4331,
+     -21.1862,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.9,
+    "place": "69 km NE of Tadine, New Caledonia",
+    "time": 1790401848511,
+    "updated": 1792447167040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tz3k",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     168.6429,
+     -21.2217,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "86 km ENE of Tadine, New Caledonia",
+    "time": 1790419884949,
+    "updated": 1791445143040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000txsy",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     168.5033,
+     -21.1453,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.7,
+    "place": "78 km NE of Tadine, New Caledonia",
+    "time": 1790424661704,
+    "updated": 1791448705040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000txt9",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     168.4849,
+     -21.0512,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.8,
+    "place": "83 km NE of Tadine, New Caledonia",
+    "time": 1790430529760,
+    "updated": 1790697021040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000txtn",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     168.5731,
+     -21.268,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5,
+    "place": "78 km ENE of Tadine, New Caledonia",
+    "time": 1790434896315,
+    "updated": 1790696179040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000txv7",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     152.8329,
+     -4.7152,
+     67.662
+    ]
+   },
+   "properties": {
+    "mag": 4.9,
+    "place": "74 km ESE of Kokopo, Papua New Guinea",
+    "time": 1790459368074,
+    "updated": 1791782399040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tz5l",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     168.5401,
+     -21.3076,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "73 km ENE of Tadine, New Caledonia",
+    "time": 1790468904368,
+    "updated": 1792371294040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tz5w",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     102.5041,
+     -6.6115,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "297 km SSW of Pagar Alam, Indonesia",
+    "time": 1790486621420,
+    "updated": 1791701768040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tz65",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -27.2166,
+     -55.7981,
+     34.388
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "South Sandwich Islands region",
+    "time": 1790507023329,
+    "updated": 1792428428040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000txzx",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     100.5554,
+     27.9739,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "19 km NW of Yongning, China",
+    "time": 1790533798261,
+    "updated": 1791047945040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000ty11",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     155.7466,
+     -7.3468,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.8,
+    "place": "117 km SSE of Panguna, Papua New Guinea",
+    "time": 1790549226874,
+    "updated": 1791152647040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000ty1j",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     163.9067,
+     58.6379,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "83 km SE of Ossora, Russia",
+    "time": 1790555879308,
+    "updated": 1791236122040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000ty2b",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     168.4385,
+     -21.1582,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5.3,
+    "place": "72 km NE of Tadine, New Caledonia",
+    "time": 1790565906259,
+    "updated": 1792027294040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000ty2y",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -25.1146,
+     -57.7018,
+     35
+    ]
+   },
+   "properties": {
+    "mag": 4.9,
+    "place": "South Sandwich Islands region",
+    "time": 1790570493258,
+    "updated": 1792453284040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000ty33",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     168.5459,
+     -21.2065,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5.1,
+    "place": "78 km ENE of Tadine, New Caledonia",
+    "time": 1790573288891,
+    "updated": 1790574508040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000ty57",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -7.4402,
+     82.5871,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5.4,
+    "place": "north of Svalbard",
+    "time": 1790601759698,
+    "updated": 1791472304597,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tzr2",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     168.5476,
+     -21.3631,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "72 km ENE of Tadine, New Caledonia",
+    "time": 1790624633245,
+    "updated": 1792302492040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u0i7",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     168.4705,
+     -21.0874,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "79 km NE of Tadine, New Caledonia",
+    "time": 1790643621624,
+    "updated": 1792459518040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tyab",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -28.2067,
+     -55.3044,
+     33.409
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "South Sandwich Islands region",
+    "time": 1790655387023,
+    "updated": 1792462914040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tymj",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -86.4861,
+     9.7776,
+     8
+    ]
+   },
+   "properties": {
+    "mag": 5.6,
+    "place": "91 km SW of Tamarindo, Costa Rica",
+    "time": 1790805326296,
+    "updated": 1791430735230,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000typ0",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     123.1839,
+     -0.863,
+     116.392
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "45 km ENE of Luwuk, Indonesia",
+    "time": 1790818283443,
+    "updated": 1790819410040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u0z6",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     104.6464,
+     28.5791,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "15 km NNW of Xunchang, China",
+    "time": 1790833121162,
+    "updated": 1792056383040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tyqx",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -41.5756,
+     31.1923,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "northern Mid-Atlantic Ridge",
+    "time": 1790840406421,
+    "updated": 1792130489040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tyqy",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     73.2281,
+     41.3535,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "50 km NNE of Jalal-Abad, Kyrgyzstan",
+    "time": 1790842678942,
+    "updated": 1792131869040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tyuf",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -163.7238,
+     53.7226,
+     35
+    ]
+   },
+   "properties": {
+    "mag": 4.8,
+    "place": "127 km S of False Pass, Alaska",
+    "time": 1790865979877,
+    "updated": 1792437434789,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tz5h",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -62.2335,
+     10.3838,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5,
+    "place": "22 km SSE of G\u00fciria, Venezuela",
+    "time": 1790958684505,
+    "updated": 1792185852244,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tz62",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     159.6705,
+     51.798,
+     17
+    ]
+   },
+   "properties": {
+    "mag": 5.7,
+    "place": "152 km SE of Vilyuchinsk, Russia",
+    "time": 1790958879331,
+    "updated": 1792186737477,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u173",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     159.6079,
+     51.4649,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "182 km SSE of Vilyuchinsk, Russia",
+    "time": 1790959813031,
+    "updated": 1792246265040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tz6z",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     94.4239,
+     23.1139,
+     106.733
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "58 km S of Mawlaik, Burma (Myanmar)",
+    "time": 1790960133845,
+    "updated": 1792247718040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tz8f",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     142.8232,
+     40.0341,
+     49.952
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "86 km E of Noda, Japan",
+    "time": 1790973296862,
+    "updated": 1791036300040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tz8g",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     158.0496,
+     52.5605,
+     74.647
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "46 km SSW of Paratunka, Russia",
+    "time": 1790973468318,
+    "updated": 1791043156040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tz9t",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     159.7182,
+     51.5846,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "174 km SSE of Vilyuchinsk, Russia",
+    "time": 1790985566824,
+    "updated": 1790989234040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tzer",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     118.9078,
+     -9.5672,
+     45.951
+    ]
+   },
+   "properties": {
+    "mag": 5.9,
+    "place": "39 km WSW of Tambolaka, Indonesia",
+    "time": 1791068155358,
+    "updated": 1791224735012,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tzm7",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     151.8684,
+     45.953,
+     35
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "Kuril Islands",
+    "time": 1791173783636,
+    "updated": 1791174967040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tzmt",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     144.0442,
+     22.8488,
+     35
+    ]
+   },
+   "properties": {
+    "mag": 4.9,
+    "place": "Volcano Islands, Japan region",
+    "time": 1791184418006,
+    "updated": 1791186032040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u0y9",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -14.5263,
+     -33.7038,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.7,
+    "place": "southern Mid-Atlantic Ridge",
+    "time": 1791194586087,
+    "updated": 1791463384040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tzna",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     147.395,
+     15.8046,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5,
+    "place": "187 km ENE of Saipan, Northern Mariana Islands",
+    "time": 1791197529844,
+    "updated": 1792407757742,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tznu",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     123.3388,
+     25.0888,
+     154.725
+    ]
+   },
+   "properties": {
+    "mag": 4.7,
+    "place": "76 km NNE of Yonakuni, Japan",
+    "time": 1791207045405,
+    "updated": 1792005089040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tzry",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     39.9766,
+     9.0124,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "14 km NNE of Metah\u0101ra, Ethiopia",
+    "time": 1791229676119,
+    "updated": 1792318906040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000tzwi",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     178.7672,
+     -30.8569,
+     537.886
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "Kermadec Islands region",
+    "time": 1791293182092,
+    "updated": 1791300896040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u0t4",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     125.8638,
+     5.4326,
+     114.635
+    ]
+   },
+   "properties": {
+    "mag": 4.7,
+    "place": "44 km E of Sarangani, Philippines",
+    "time": 1791391369025,
+    "updated": 1792094862040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u0te",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     143.8558,
+     -4.4473,
+     101.453
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "48 km SSW of Angoram, Papua New Guinea",
+    "time": 1791394573751,
+    "updated": 1791399865040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u0w9",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     142.2259,
+     36.7526,
+     45.516
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "124 km ESE of Iwaki, Japan",
+    "time": 1791434519702,
+    "updated": 1791940362040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u11v",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -41.8655,
+     30.5774,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5.1,
+    "place": "northern Mid-Atlantic Ridge",
+    "time": 1791493170654,
+    "updated": 1792525376040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u15l",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -86.0613,
+     11.5951,
+     165.662
+    ]
+   },
+   "properties": {
+    "mag": 4.8,
+    "place": "17 km S of Nandaime, Nicaragua",
+    "time": 1791549223985,
+    "updated": 1791569578282,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u168",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     179.8009,
+     -24.7006,
+     538.346
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "south of the Fiji Islands",
+    "time": 1791559138762,
+    "updated": 1792356569040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u18e",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     160.6987,
+     51.8952,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.8,
+    "place": "191 km SE of Petropavlovsk-Kamchatsky, Russia",
+    "time": 1791565744613,
+    "updated": 1791566817040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u2t4",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -80.3467,
+     7.3502,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "12 km ESE of Tonos\u00ed, Panama",
+    "time": 1791569564715,
+    "updated": 1792476081040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u2t9",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -80.7328,
+     7.7204,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "1 km NE of Quebrada del Rosario, Panama",
+    "time": 1791570401140,
+    "updated": 1792488198040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u197",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -81.2645,
+     7.6504,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5,
+    "place": "10 km SE of R\u00edo Grande, Panama",
+    "time": 1791572689376,
+    "updated": 1791997155040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u19v",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     152.1103,
+     -5.4312,
+     50.541
+    ]
+   },
+   "properties": {
+    "mag": 4.7,
+    "place": "121 km S of Kokopo, Papua New Guinea",
+    "time": 1791577209257,
+    "updated": 1791585403040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u19w",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -81.444,
+     7.7013,
+     24.044
+    ]
+   },
+   "properties": {
+    "mag": 6.6,
+    "place": "12 km W of R\u00edo Grande, Panama",
+    "time": 1791577540656,
+    "updated": 1792000093676,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u1a5",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -81.084,
+     7.7723,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5,
+    "place": "4 km ENE of Leones Arriba, Panama",
+    "time": 1791578464285,
+    "updated": 1791994840040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u1cd",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     145.0892,
+     13.8594,
+     111.584
+    ]
+   },
+   "properties": {
+    "mag": 5.3,
+    "place": "41 km NNE of Yigo Village, Guam",
+    "time": 1791604698250,
+    "updated": 1792469344917,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u1f6",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -81.3036,
+     7.8256,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "5 km WNW of Guarumal, Panama",
+    "time": 1791644363684,
+    "updated": 1791657190040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u1fk",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -80.4282,
+     7.4596,
+     13.518
+    ]
+   },
+   "properties": {
+    "mag": 4.7,
+    "place": "2 km WNW of El Cacao, Panama",
+    "time": 1791648342775,
+    "updated": 1791652513614,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u1nx",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -114.2488,
+     -49.9461,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.8,
+    "place": "southern East Pacific Rise",
+    "time": 1791770364315,
+    "updated": 1791772065040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u1pz",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     179.9814,
+     -25.1916,
+     470.833
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "south of the Fiji Islands",
+    "time": 1791782150307,
+    "updated": 1791783392040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u1rm",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     113.0997,
+     -9.152,
+     55.223
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "100 km SSW of Kencong, Indonesia",
+    "time": 1791806288604,
+    "updated": 1791808791040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u1s8",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     174.8342,
+     51.4264,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "194 km SE of Attu Station, Alaska",
+    "time": 1791815393312,
+    "updated": 1791819004396,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u27u",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     152.2617,
+     -5.443,
+     35
+    ]
+   },
+   "properties": {
+    "mag": 4.9,
+    "place": "121 km S of Kokopo, Papua New Guinea",
+    "time": 1791959226453,
+    "updated": 1791964387040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u2er",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     121.2525,
+     19.2179,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "67 km N of Namuac, Philippines",
+    "time": 1792039272999,
+    "updated": 1792467888040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u2x7",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -93.2479,
+     14.0576,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.9,
+    "place": "115 km SW of Puerto Madero, Mexico",
+    "time": 1792198980020,
+    "updated": 1792199882040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u300",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     118.5983,
+     -9.3596,
+     68.927
+    ]
+   },
+   "properties": {
+    "mag": 4.6,
+    "place": "70 km W of Tambolaka, Indonesia",
+    "time": 1792241183796,
+    "updated": 1792300257040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u35l",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -177.3838,
+     -30.1265,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "Kermadec Islands, New Zealand",
+    "time": 1792327342533,
+    "updated": 1792328391040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u37h",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -174.2956,
+     -21.541,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5.2,
+    "place": "71 km ESE of \u2018Ohonua, Tonga",
+    "time": 1792351948734,
+    "updated": 1792354380040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u3c1",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     120.1872,
+     -8.1064,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.9,
+    "place": "54 km NE of Labuan Bajo, Indonesia",
+    "time": 1792403156107,
+    "updated": 1792404789040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u3ga",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     165.5508,
+     -14.0371,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5.7,
+    "place": "198 km NW of Port-Olry, Vanuatu",
+    "time": 1792435956659,
+    "updated": 1792520498040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u3ge",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     165.4974,
+     -14.0266,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 5.7,
+    "place": "203 km WNW of Port-Olry, Vanuatu",
+    "time": 1792436137471,
+    "updated": 1792443679614,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u3l3",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -178.4627,
+     -15.1536,
+     417.492
+    ]
+   },
+   "properties": {
+    "mag": 4.5,
+    "place": "100 km SSW of Alo, Wallis and Futuna",
+    "time": 1792486717177,
+    "updated": 1792488139040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u3nd",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -177.0103,
+     -24.1803,
+     109.548
+    ]
+   },
+   "properties": {
+    "mag": 4.8,
+    "place": "south of the Fiji Islands",
+    "time": 1792513783678,
+    "updated": 1792515630040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us6000u3pq",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     165.6598,
+     -14.0479,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 4.9,
+    "place": "187 km NW of Port-Olry, Vanuatu",
+    "time": 1792526606613,
+    "updated": 1792528102040,
+    "type": "earthquake"
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "synthetic_null_mag",
+   "properties": {
+    "mag": null,
+    "place": "synthetic test case",
+    "time": 1760000000000,
+    "updated": 1760000000000,
+    "type": "earthquake",
+    "_note": "SYNTHETIC: mag is null"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     140.0,
+     36.0,
+     10.0
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "synthetic_bad_lat",
+   "properties": {
+    "mag": 6.0,
+    "place": "synthetic test case",
+    "time": 1760000000000,
+    "updated": 1760000000000,
+    "type": "earthquake",
+    "_note": "SYNTHETIC: latitude out of range"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     10.0,
+     95.0,
+     10.0
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "synthetic_bad_lon",
+   "properties": {
+    "mag": 6.0,
+    "place": "synthetic test case",
+    "time": 1760000000000,
+    "updated": 1760000000000,
+    "type": "earthquake",
+    "_note": "SYNTHETIC: longitude out of range"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     200.0,
+     10.0,
+     10.0
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "synthetic_no_geometry",
+   "properties": {
+    "mag": 6.0,
+    "place": "synthetic test case",
+    "time": 1760000000000,
+    "updated": 1760000000000,
+    "type": "earthquake",
+    "_note": "SYNTHETIC: geometry is null"
+   },
+   "geometry": null
+  },
+  {
+   "type": "Feature",
+   "id": "synthetic_string_mag",
+   "properties": {
+    "mag": "big",
+    "place": "synthetic test case",
+    "time": 1760000000000,
+    "updated": 1760000000000,
+    "type": "earthquake",
+    "_note": "SYNTHETIC: non-numeric magnitude"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     120.0,
+     23.0,
+     10.0
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "synthetic_antimeridian",
+   "properties": {
+    "mag": 5.6,
+    "place": "synthetic test case",
+    "time": 1760000000000,
+    "updated": 1760000000000,
+    "type": "earthquake",
+    "_note": "SYNTHETIC: west of 180; Labasa (Fiji, lon +179.38) is ~71 km away across the antimeridian"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -179.95,
+     -16.45,
+     10.0
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "synthetic_open_ocean",
+   "properties": {
+    "mag": 5.2,
+    "place": "synthetic test case",
+    "time": 1760000000000,
+    "updated": 1760000000000,
+    "type": "earthquake",
+    "_note": "SYNTHETIC: valid M5+ with no city nearby"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -140.0,
+     -45.0,
+     10.0
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "id": "us7000tixc",
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -71.8981,
+     -22.3472,
+     10
+    ]
+   },
+   "properties": {
+    "mag": 1.0,
+    "place": "170 km WNW of Mejillones, Chile",
+    "time": 1789991309030,
+    "updated": 1792351796040,
+    "type": "earthquake",
+    "_note": "SYNTHETIC: stale duplicate of a real id (older 'updated', fake mag 1.0)"
+   }
+  }
+ ]
+}

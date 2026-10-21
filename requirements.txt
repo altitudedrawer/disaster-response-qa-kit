@@ -1,0 +1,9 @@
+# Versions = what was actually installed and tested on 2026-10-20 (Python 3.11.17).
+geopandas==1.2.0
+shapely==2.2.0
+pyproj==3.7.2
+pyogrio==0.13.0
+pandas==3.0.6
+numpy==2.4.6
+requests==2.34.2
+pytest==9.1.1
