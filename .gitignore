@@ -1,0 +1,15 @@
+# secrets
+.env
+# data downloads and pipeline outputs (regenerate with scripts/)
+data/
+output/
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/
+# mac
+.DS_Store
+# personal notes not part of the repo
+Prompt of disaster.docx

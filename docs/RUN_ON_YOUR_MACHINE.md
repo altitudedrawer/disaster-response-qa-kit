@@ -26,7 +26,7 @@ brew install uv
 # or: curl -LsSf https://astral.sh/uv/install.sh | sh
 
 # 2. From the project folder, create a Python 3.11 virtual env
-cd ~/DisasterResponse
+cd ~/DisasterResponse/disaster-response-qa-kit
 uv venv --python 3.11 .venv
 source .venv/bin/activate
 
@@ -40,8 +40,8 @@ docker --version
 ## Phase 1: tests and pipeline on fixtures (offline)
 
 ```bash
-cd ~/DisasterResponse && source .venv/bin/activate
-python -m pytest -v                       # 63 tests, no internet needed
+cd ~/DisasterResponse/disaster-response-qa-kit && source .venv/bin/activate
+python -m pytest -v                       # 64 tests, no internet needed
 PYTHONPATH=src python -m pipeline.run \
   --events tests/fixtures/earthquakes_sample.geojson \
   --cities tests/fixtures/cities_sample.geojson \
@@ -49,7 +49,18 @@ PYTHONPATH=src python -m pipeline.run \
 ```
 
 Optional: rebuild fixtures (needs `data/raw/` downloads; output should be identical):
-`python scripts/make_fixtures.py`
+`python scripts/make_fixtures.py` (identical output only from the same USGS snapshot; the 30-day feed changes, so a fresh download gives different fixtures and some fixture tests would need updating)
+
+## Phase 2: real data (needs internet, ~4 s download, ~2.6 MB)
+
+```bash
+python scripts/download_data.py --start 2025-10-20 --end 2026-10-20 --min-mag 5
+PYTHONPATH=src python -m pipeline.run \
+  --events data/raw/usgs_m5_2025-10-20_2026-10-20.geojson \
+  --cities zip://data/raw/ne_10m_populated_places_simple.zip \
+  --out output/m5_1yr.geojson
+python scripts/oracle_check.py output/m5_1yr.geojson zip://data/raw/ne_10m_populated_places_simple.zip
+```
 
 ## Commands added in later phases
 TODO: filled in as each phase lands.

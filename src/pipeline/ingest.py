@@ -15,7 +15,7 @@ import requests
 
 from . import WGS84
 
-EVENT_COLUMNS = ["id", "mag", "place", "time", "updated", "lon", "lat", "depth_km"]
+EVENT_COLUMNS = ["id", "mag", "place", "time", "updated", "lon", "lat", "depth_km", "event_type"]
 
 
 def parse_usgs_geojson(data: dict) -> pd.DataFrame:
@@ -39,6 +39,7 @@ def parse_usgs_geojson(data: dict) -> pd.DataFrame:
                 "lon": coords[0],
                 "lat": coords[1],
                 "depth_km": coords[2],
+                "event_type": props.get("type"),
             }
         )
     return pd.DataFrame(rows, columns=EVENT_COLUMNS)
@@ -69,4 +70,12 @@ def load_cities(path: str | Path) -> gpd.GeoDataFrame:
     gdf = gdf[gdf.geometry.geom_type == "Point"]
     if gdf.crs is None:
         gdf = gdf.set_crs(WGS84)
-    return gdf.to_crs(WGS84).reset_index(drop=True)
+    gdf = gdf.to_crs(WGS84).reset_index(drop=True)
+    # Natural Earth has 242 repeated names (Aberdeen UK vs Aberdeen US), so add the country.
+    # NOTE: we use the point geometry, not NE's 'latitude'/'longitude' columns, which
+    # disagree with the geometry by up to 0.7 deg for 301 places (see README).
+    if "adm0name" in gdf.columns:
+        gdf["label"] = gdf["name"] + " (" + gdf["adm0name"].fillna("?") + ")"
+    else:
+        gdf["label"] = gdf["name"]
+    return gdf

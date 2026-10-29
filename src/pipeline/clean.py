@@ -36,10 +36,13 @@ def clean_events(df: pd.DataFrame, min_mag: float = DEFAULT_MIN_MAG) -> CleanRes
                                 or lon outside [-180, 180]. We do NOT try to "fix"
                                 e.g. lon=200, because guessing could move a quake.
       3. duplicate_id         - same id seen twice; keep the most recently updated row
-      4. below_min_magnitude  - mag < min_mag
+      4. non_earthquake       - USGS 'type' is set and isn't "earthquake" (the real
+                                M5+ year query contained a magnitude-5.2 *landslide*).
+                                Missing type is kept: absence isn't evidence.
+      5. below_min_magnitude  - mag < min_mag
     """
     rows_in = len(df)
-    dropped = {k: 0 for k in ("null_magnitude", "invalid_coordinates", "duplicate_id", "below_min_magnitude")}
+    dropped = {k: 0 for k in ("null_magnitude", "invalid_coordinates", "duplicate_id", "non_earthquake", "below_min_magnitude")}
     if rows_in == 0:
         return CleanResult(_empty_events(), dropped, 0)
 
@@ -67,6 +70,10 @@ def clean_events(df: pd.DataFrame, min_mag: float = DEFAULT_MIN_MAG) -> CleanRes
     )
     df = pd.concat([deduped, df[~has_id]])
     dropped["duplicate_id"] = before - len(df)
+
+    not_eq = df["event_type"].notna() & (df["event_type"] != "earthquake")
+    dropped["non_earthquake"] = int(not_eq.sum())
+    df = df[~not_eq]
 
     low = df["mag"] < min_mag
     dropped["below_min_magnitude"] = int(low.sum())

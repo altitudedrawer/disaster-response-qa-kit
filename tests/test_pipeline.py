@@ -33,7 +33,8 @@ def test_matches_brute_force_oracle(result, cities_path):
     for f in gj["features"]:
         lon, lat = f["geometry"]["coordinates"]
         d_km = geodesic_distance_m(np.full(cx.size, lon), np.full(cy.size, lat), cx, cy) / 1000
-        expected = sorted(cities["name"][d_km <= 100])
+        labels = cities["name"] + " (" + cities["adm0name"] + ")"   # built independently of the code
+        expected = sorted(labels[d_km <= 100])
         got = sorted(n for n in f["properties"]["city_names"].split("; ") if n)
         assert got == expected, f["properties"]["id"]
         assert f["properties"]["city_count"] == len(expected)

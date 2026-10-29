@@ -27,3 +27,4 @@ def test_load_cities_fixture(cities_path):
     assert len(cities) == 200
     assert cities.crs.to_epsg() == 4326
     assert (cities.geometry.geom_type == "Point").all()
+    assert "Labasa (Fiji)" in set(cities["label"])

@@ -7,7 +7,8 @@ from pipeline.ingest import EVENT_COLUMNS, load_events
 
 def frame(rows):
     """rows of dicts with any subset of EVENT_COLUMNS."""
-    base = {"id": None, "mag": 5.5, "place": "p", "time": 0, "updated": 0, "lon": 0.0, "lat": 0.0, "depth_km": 10}
+    base = {"id": None, "mag": 5.5, "place": "p", "time": 0, "updated": 0, "lon": 0.0, "lat": 0.0,
+            "depth_km": 10, "event_type": "earthquake"}
     return pd.DataFrame([{**base, **r} for r in rows], columns=EVENT_COLUMNS)
 
 
@@ -72,3 +73,11 @@ def test_fixture_drop_report_matches_synthetic_cases(events_path):
     assert res.dropped["duplicate_id"] == 1
     assert res.rows_in - sum(res.dropped.values()) == len(res.events)
     assert (res.events["mag"] >= 5.0).all()
+
+
+def test_non_earthquake_types_dropped_but_missing_type_kept():
+    """Real-data regression: the 2025-10-20..2026-10-20 M5+ query returned a landslide."""
+    res = clean_events(frame([{"id": "ls", "event_type": "landslide"},
+                              {"id": "eq"}, {"id": "untyped", "event_type": None}]))
+    assert sorted(res.events["id"]) == ["eq", "untyped"]
+    assert res.dropped["non_earthquake"] == 1

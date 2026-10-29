@@ -26,8 +26,9 @@ def city_pairs(events: gpd.GeoDataFrame, cities: gpd.GeoDataFrame,
         return pd.DataFrame(columns=cols)
     radius_m = radius_km * 1000.0
     buffers = buffer_events(events[["id", "lon", "lat", "geometry"]], prefilter_radius_m(radius_m))
+    label_col = "label" if "label" in cities.columns else "name"
     cand = gpd.sjoin(
-        cities[["name", "geometry"]].rename(columns={"name": "city_name"}),
+        cities[[label_col, "geometry"]].rename(columns={label_col: "city_name"}),
         buffers, how="inner", predicate="intersects",
     )
     if cand.empty:
@@ -46,6 +47,7 @@ def cities_near_events(events: gpd.GeoDataFrame, cities: gpd.GeoDataFrame,
     nearest first), nearest_city and nearest_km. Events with no cities keep
     city_count = 0 -- a LEFT join, so no quake silently disappears.
 
+    City names come from the 'label' column ("Aberdeen (United Kingdom)") when present.
     city_names is a string, not a list, because ArcGIS feature layers and
     shapefiles can't store list-valued fields.
     """
