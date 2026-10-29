@@ -41,7 +41,7 @@ docker --version
 
 ```bash
 cd ~/DisasterResponse/disaster-response-qa-kit && source .venv/bin/activate
-python -m pytest -v                       # 64 tests, no internet needed
+python -m pytest -v                       # offline; contract tests auto-skip
 PYTHONPATH=src python -m pipeline.run \
   --events tests/fixtures/earthquakes_sample.geojson \
   --cities tests/fixtures/cities_sample.geojson \
@@ -60,6 +60,47 @@ PYTHONPATH=src python -m pipeline.run \
   --cities zip://data/raw/ne_10m_populated_places_simple.zip \
   --out output/m5_1yr.geojson
 python scripts/oracle_check.py output/m5_1yr.geojson zip://data/raw/ne_10m_populated_places_simple.zip
+```
+
+## Phase 3: publish to ArcGIS Online (you run this; Claude never sees your credentials)
+
+What you need: an ArcGIS account that can **publish hosted feature layers** (an ArcGIS
+Online organizational account with publisher privileges, or an ArcGIS Location Platform
+account). If your account signs in only through SSO (e.g. a university login),
+username/password won't work. Tell me and we'll switch `publish.py` to OAuth or an API key.
+
+```bash
+cd ~/DisasterResponse/disaster-response-qa-kit && source .venv/bin/activate
+uv pip install -r requirements-publish.txt      # arcgis 2.4.4 (works on macOS arm64)
+
+# 1. Dry run: validates the GeoJSON, builds metadata, no login, no network
+PYTHONPATH=src python -m pipeline.publish output/m5_1yr.geojson --dry-run
+
+# 2. Credentials: only in .env, which git ignores
+cp .env.example .env
+open -e .env                                    # fill ARCGIS_USERNAME / ARCGIS_PASSWORD, save
+set -a; source .env; set +a
+
+# 3. Real publish. --name must be unique in your org. --share-public lets the
+#    contract tests run without a token (the data is public anyway).
+PYTHONPATH=src python -m pipeline.publish output/m5_1yr.geojson --name drqa_m5_cities --share-public
+#    -> prints JSON with "layer_url": ".../FeatureServer/0"
+
+# 4. Put that layer_url into .env as FEATURE_SERVICE_URL=..., then reload and run the contract tests
+set -a; source .env; set +a
+python -m pytest tests/contract -v
+```
+
+Expected: 8 contract tests run. `test_longest_city_names_not_truncated` is the one most
+likely to fail (it checks whether ArcGIS kept our 307-character `city_names`). If it fails,
+that's a real finding: tell me and we'll fix the field length.
+
+Re-publishing: delete the old item in ArcGIS Online -> Content first, or use a new `--name`.
+
+Optional self-test of the contract-test harness against a public Esri layer, no account needed:
+```bash
+FEATURE_SERVICE_URL=https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/services/USGS_Seismic_Data_v1/FeatureServer/0 \
+CONTRACT_EXPECTED_FIELDS=id,mag,place CONTRACT_LOCAL_GEOJSON= python -m pytest tests/contract -v
 ```
 
 ## Commands added in later phases

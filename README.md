@@ -76,6 +76,17 @@ Found by profiling the real downloads before running the pipeline:
 7. **Mixed magnitude types** (`mww` 1,127, `mb` 823, `ml` 15, others 13): "M5" means slightly
    different things across scales. Not corrected; noted as a limitation.
 
+## Publishing to ArcGIS (Phase 3)
+
+`python -m pipeline.publish <geojson> --dry-run` validates and prepares without logging in.
+The real publish uses ArcGIS API for Python 2.4.4 with credentials from environment variables
+only. Live contract tests in `tests/contract/` auto-skip unless `FEATURE_SERVICE_URL` is set.
+Steps: `docs/RUN_ON_YOUR_MACHINE.md`. Concepts: `docs/CONCEPTS.md`.
+
+Status: dry-run and the publish call sequence (against fake `arcgis` objects, plus a
+signature check against the real 2.4.4 package) are tested. The real publish to ArcGIS Online
+has **not been run yet** (TODO: run it and record the result here).
+
 ## Honest limitations (so far)
 
 - Buffers containing a pole raise an error (no M5+ quake was within 100 km of a pole in this data).
