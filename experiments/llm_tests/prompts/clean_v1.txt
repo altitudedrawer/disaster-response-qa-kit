@@ -1,0 +1,58 @@
+<!-- prompt_version: v1 -- if you change this template, bump the version and record it in the review sheet -->
+You are a senior Python test engineer. Write pytest unit tests for the module `pipeline.clean`.
+
+You are given ONLY the public signatures and docstrings below, not the implementations.
+Test the behaviour the docstrings promise. If a docstring is ambiguous, write the test you
+think is most reasonable and add a comment starting with `# ASSUMPTION:` explaining it.
+
+```python
+class CleanResult:
+    """
+    Output of clean_events.
+
+    events:  valid events as a GeoDataFrame (EPSG:4326, Point geometry, same columns as the input
+             plus geometry; 'time'/'updated' converted to UTC datetimes)
+    dropped: rule name -> number of rows that rule removed (all five keys always present)
+    rows_in: number of input rows
+    """
+    events: gpd.GeoDataFrame
+    dropped: dict[str, int] = field(default_factory=dict)
+    rows_in: int = 0
+
+
+def clean_events(df: pd.DataFrame, min_mag: float=DEFAULT_MIN_MAG) -> CleanResult:
+    """
+    Return valid events with magnitude >= min_mag as a point GeoDataFrame (WGS84).
+
+    `df` is the output of ingest.parse_usgs_geojson, with columns
+    id, mag, place, time, updated, lon, lat, depth_km, event_type
+    (time/updated are epoch milliseconds, as in the USGS feed).
+
+    Rules, applied in this order:
+      1. null_magnitude       - mag missing or not a number
+      2. invalid_coordinates  - lon/lat missing, non-numeric, lat outside [-90, 90],
+                                or lon outside [-180, 180]. We do NOT try to "fix"
+                                e.g. lon=200, because guessing could move a quake.
+      3. duplicate_id         - same id seen twice; keep the most recently updated row
+      4. non_earthquake       - USGS 'type' is set and isn't "earthquake" (the real
+                                M5+ year query contained a magnitude-5.2 *landslide*).
+                                Missing type is kept: absence isn't evidence.
+      5. below_min_magnitude  - mag < min_mag
+    """
+    ...
+```
+
+Rules:
+1. Output a single Python file, with no prose before or after it.
+2. Import from `pipeline.clean` exactly as named above. Do not invent functions, parameters or
+   return fields that are not shown.
+3. Tests must be deterministic and offline: no network, no real files outside pytest's `tmp_path`,
+   no current-time dependence, no randomness without a fixed seed.
+4. Prefer small hand-built inputs whose correct answer you can justify. For geographic distances,
+   build points with `pyproj.Geod(ellps="WGS84").fwd(...)` so the distance is known by construction.
+5. Cover: normal cases, boundaries (inclusive/exclusive limits), empty input, invalid input,
+   and any edge case a docstring mentions explicitly.
+6. Name every test `test_<function>_<behaviour>`. Put a one-line docstring in each test saying
+   what it checks.
+7. Aim for 8–15 tests. Quality over quantity: no duplicate tests that differ only in a constant.
+

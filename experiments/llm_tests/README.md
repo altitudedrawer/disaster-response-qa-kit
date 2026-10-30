@@ -12,6 +12,8 @@ run on a review sheet you filled in yourself. Nothing here is pre-filled.
 |---|---|
 | `prompt_template.md` | The prompt (version `v1`). Change it → bump the version and record it |
 | `extract_signatures.py` | Fills the template with a module's public signatures + docstrings (no function bodies) |
+| `prompts/` | The 4 ready-to-paste prompts (`clean_v1.txt`, `geo_v1.txt`, `join_v1.txt`, `publish_v1.txt`) |
+| `prefill_sheet.py` | Runs a generated file and appends one row per test (measured facts only; your decision columns stay blank) |
 | `generated/` | Raw LLM output, saved **unmodified** (this is your evidence trail) |
 | `review_sheet.csv` | One row per generated test, filled in by you |
 | `acceptance_rate.py` | Computes rates, a 95% interval and reason breakdowns from the sheet |
@@ -21,10 +23,8 @@ run on a review sheet you filled in yourself. Nothing here is pre-filled.
 1. **Targets** (suggested, 4 functions with different difficulty):
    `pipeline.clean` (`clean_events`), `pipeline.geo` (`geodesic_buffer`),
    `pipeline.join` (`cities_near_events`), `pipeline.publish` (`validate_geojson`).
-2. **Make the prompt:**
-   ```bash
-   python experiments/llm_tests/extract_signatures.py src/pipeline/clean.py --functions CleanResult clean_events > /tmp/prompt_clean.txt
-   ```
+2. **Prompts** are already in `prompts/` (regenerate with `extract_signatures.py` if the code changes).
+   On a Mac, `pbcopy < experiments/llm_tests/prompts/clean_v1.txt` copies one to the clipboard.
 3. **Generate:** paste the prompt into a fresh chat. Record the exact model name and the date.
    **One shot, no follow-up corrections.** If you coach it, you're measuring yourself, not the model.
 4. **Save raw output** as `generated/<model>_<module>_v1.py`, untouched.
@@ -32,7 +32,11 @@ run on a review sheet you filled in yourself. Nothing here is pre-filled.
    ```bash
    python -m pytest experiments/llm_tests/generated/<file>.py -v -p no:cacheprovider
    ```
-   Note which tests pass without any change → `ran_green_unmodified`.
+   Then record the measured facts automatically:
+   ```bash
+   python experiments/llm_tests/prefill_sheet.py experiments/llm_tests/generated/<file>.py \
+       --model "<exact model name>" --module pipeline.clean
+   ```
 6. **Review each test**, one row per test in `review_sheet.csv`:
    - `accepted`: unmodified, passes, and checks something the docstring promises
    - `edited`: worth keeping but needed a change. Pick the main reason (`wrong_expected_value`, `style_only`, ...)
@@ -58,9 +62,11 @@ e.g. remove the antimeridian split) and record whether the LLM's tests catch eac
 - **Small n:** ~40–60 tests gives wide intervals. That's why the 95% CI is reported.
 - **One prompt, one shot:** results describe this prompt (`v1`) and this model on this date, not
   "LLMs" in general.
-- **Docstrings were improved before the experiment** (`CleanResult` got a docstring and the
-  input columns of `clean_events` were documented, after the extractor showed an LLM would
-  otherwise have to guess). This is noted so nobody mistakes it for tuning after the fact.
+- **Docstrings were improved before the experiment** (2026-10-29/30, before any LLM output was
+  seen): `CleanResult` got a docstring; the inputs of `clean_events` and `cities_near_events`,
+  the defaults of `geodesic_buffer`, and the exact checks of `validate_geojson` were documented,
+  because the extractor showed an LLM would otherwise have to guess. The extractor also stopped
+  leaking annotated local variables from function bodies. This is noted so nobody mistakes it for tuning after the fact.
 
 ## Results
 

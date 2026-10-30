@@ -71,9 +71,11 @@ def load(path: Path) -> list[dict]:
         elif r["test_id"] in seen:
             problems.append(f"line {i}: duplicate test_id {r['test_id']!r}")
         seen.add(r["test_id"])
-        if r["decision"] not in DECISIONS:
+        if not r["decision"]:
+            problems.append(f"line {i}: {r['test_id']}: not reviewed yet (decision is blank)")
+        elif r["decision"] not in DECISIONS:
             problems.append(f"line {i}: decision must be one of {DECISIONS}, got {r['decision']!r}")
-        if r["reason_category"] not in REASONS:
+        if r["decision"] and r["reason_category"] not in REASONS:
             problems.append(f"line {i}: reason_category {r['reason_category']!r} not in {sorted(REASONS)}")
         if r["ran_green_unmodified"] not in ("yes", "no"):
             problems.append(f"line {i}: ran_green_unmodified must be yes/no")

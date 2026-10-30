@@ -37,7 +37,9 @@ def geodesic_distance_m(lon1, lat1, lon2, lat2) -> np.ndarray:
 
 def geodesic_buffer(lon: float, lat: float, radius_m: float, n_vertices: int = N_VERTICES):
     """Polygon (or MultiPolygon if it crosses +/-180) whose vertices are exactly
-    radius_m from (lon, lat) along the ellipsoid.
+    radius_m from (lon, lat) along the ellipsoid. lon/lat in degrees (WGS84), radius in metres.
+    n_vertices defaults to 64. Every returned coordinate is within lon [-180, 180], lat [-90, 90].
+    Raises ValueError if radius_m <= 0.
 
     Raises ValueError if the buffer would contain a pole (out of scope; would need
     a polar-cap polygon). Nearest-pole check: any epicentre within radius of 90 deg.

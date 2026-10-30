@@ -35,7 +35,14 @@ class PublishError(Exception):
 
 
 def validate_geojson(path: str | Path) -> dict:
-    """Check the file is something ArcGIS can publish cleanly. Returns a small report.
+    """Check the file is something ArcGIS can publish cleanly. Returns a small report:
+    {"path", "bytes", "features", "fields" (sorted list), "bbox" [minx, miny, maxx, maxy]}.
+
+    Checks: file exists; valid JSON; top-level type "FeatureCollection"; at least one feature;
+    every geometry is a Point with finite lon in [-180, 180] and lat in [-90, 90]; every feature
+    has all of: id, mag, place, time, city_count, city_names, nearest_city, nearest_km;
+    no property value is a list or dict; every field name starts with a letter and contains
+    only letters, digits or underscores.
 
     Raises PublishError listing every problem found (not just the first).
     """

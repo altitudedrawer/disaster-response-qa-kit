@@ -1,0 +1,42 @@
+<!-- prompt_version: v1 -- if you change this template, bump the version and record it in the review sheet -->
+You are a senior Python test engineer. Write pytest unit tests for the module `pipeline.geo`.
+
+You are given ONLY the public signatures and docstrings below, not the implementations.
+Test the behaviour the docstrings promise. If a docstring is ambiguous, write the test you
+think is most reasonable and add a comment starting with `# ASSUMPTION:` explaining it.
+
+```python
+def geodesic_distance_m(lon1, lat1, lon2, lat2) -> np.ndarray:
+    """
+    Ellipsoidal (WGS84) distance in metres. Accepts scalars or arrays.
+    """
+    ...
+
+
+def geodesic_buffer(lon: float, lat: float, radius_m: float, n_vertices: int=N_VERTICES):
+    """
+    Polygon (or MultiPolygon if it crosses +/-180) whose vertices are exactly
+    radius_m from (lon, lat) along the ellipsoid. lon/lat in degrees (WGS84), radius in metres.
+    n_vertices defaults to 64. Every returned coordinate is within lon [-180, 180], lat [-90, 90].
+    Raises ValueError if radius_m <= 0.
+
+    Raises ValueError if the buffer would contain a pole (out of scope; would need
+    a polar-cap polygon). Nearest-pole check: any epicentre within radius of 90 deg.
+    """
+    ...
+```
+
+Rules:
+1. Output a single Python file, with no prose before or after it.
+2. Import from `pipeline.geo` exactly as named above. Do not invent functions, parameters or
+   return fields that are not shown.
+3. Tests must be deterministic and offline: no network, no real files outside pytest's `tmp_path`,
+   no current-time dependence, no randomness without a fixed seed.
+4. Prefer small hand-built inputs whose correct answer you can justify. For geographic distances,
+   build points with `pyproj.Geod(ellps="WGS84").fwd(...)` so the distance is known by construction.
+5. Cover: normal cases, boundaries (inclusive/exclusive limits), empty input, invalid input,
+   and any edge case a docstring mentions explicitly.
+6. Name every test `test_<function>_<behaviour>`. Put a one-line docstring in each test saying
+   what it checks.
+7. Aim for 8–15 tests. Quality over quantity: no duplicate tests that differ only in a constant.
+

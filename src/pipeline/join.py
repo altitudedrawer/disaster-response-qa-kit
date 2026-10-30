@@ -47,6 +47,14 @@ def cities_near_events(events: gpd.GeoDataFrame, cities: gpd.GeoDataFrame,
     nearest first), nearest_city and nearest_km. Events with no cities keep
     city_count = 0 -- a LEFT join, so no quake silently disappears.
 
+    Inputs (both EPSG:4326 GeoDataFrames with Point geometry):
+      events: columns id, mag, place, time, lon, lat, depth_km (e.g. CleanResult.events)
+      cities: column 'name'; optional 'label'
+    radius_km defaults to 100. A city counts if its geodesic distance is <= radius_km.
+    Output columns, in order: id, mag, place, time, lon, lat, depth_km, city_count,
+    city_names, nearest_city, nearest_km (rounded to 0.01; NaN when no city), geometry.
+    city_names is "" when there are no cities.
+
     City names come from the 'label' column ("Aberdeen (United Kingdom)") when present.
     city_names is a string, not a list, because ArcGIS feature layers and
     shapefiles can't store list-valued fields.

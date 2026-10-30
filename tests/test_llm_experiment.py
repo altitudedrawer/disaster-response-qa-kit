@@ -97,3 +97,67 @@ def test_extract_shows_signatures_docstrings_and_fields_not_bodies():
     assert "events: gpd.GeoDataFrame" in text           # dataclass fields are shown
     assert "drop_duplicates" not in text                # implementation is hidden
     assert "_empty_events" not in text                  # private helpers are hidden
+
+
+def test_extract_hides_function_bodies_even_annotated_locals():
+    """Regression: annotated local variables inside a function leaked into the prompt."""
+    src = Path(__file__).resolve().parents[1] / "src" / "pipeline" / "publish.py"
+    text = es.extract(src, {"validate_geojson", "PublishError"})
+    assert "problems: list[str]" not in text
+    assert "class PublishError(Exception):" in text      # base class shown -> LLM knows it's an exception
+
+
+pf = load_module("prefill_sheet")
+
+FAKE_GENERATED = '''
+import pytest
+
+def test_clean_events_passes():
+    assert 1 + 1 == 2
+
+def test_clean_events_fails():
+    assert 1 + 1 == 3
+
+@pytest.mark.parametrize("x", [1, 2])
+def test_clean_events_param_one_bad(x):
+    assert x == 1
+
+class TestCleanResult:
+    def test_cleanresult_ok(self):
+        assert True
+'''
+
+
+def empty_sheet(tmp_path):
+    p = tmp_path / "sheet.csv"
+    p.write_text(",".join(ar.REQUIRED) + "\n")
+    return p
+
+
+def test_prefill_records_measured_facts_and_leaves_judgement_blank(tmp_path):
+    gen = tmp_path / "fake_clean_v1.py"
+    gen.write_text(FAKE_GENERATED)
+    sheet = empty_sheet(tmp_path)
+    assert pf.main([str(gen), "--model", "fake-model", "--module", "pipeline.clean", "--sheet", str(sheet)]) == 0
+    rows = {r["test_id"].split("::", 1)[1]: r for r in csv.DictReader(open(sheet))}
+    assert {k: r["ran_green_unmodified"] for k, r in rows.items()} == {
+        "test_clean_events_passes": "yes", "test_clean_events_fails": "no",
+        "test_clean_events_param_one_bad": "no",            # one failing case => not green
+        "TestCleanResult::test_cleanresult_ok": "yes"}
+    assert rows["test_clean_events_passes"]["target_function"] == "clean_events"
+    assert all(r["decision"] == "" and r["reason_category"] == "" for r in rows.values())
+    with pytest.raises(ar.SheetError, match="not reviewed yet"):   # can't compute until reviewed
+        ar.load(sheet)
+    # running again doesn't duplicate rows
+    pf.main([str(gen), "--model", "fake-model", "--module", "pipeline.clean", "--sheet", str(sheet)])
+    assert len(list(csv.DictReader(open(sheet)))) == 4
+
+
+def test_prefill_handles_file_that_cannot_import(tmp_path):
+    """e.g. the LLM imported a function that doesn't exist: every test counts as not green."""
+    gen = tmp_path / "fake_bad_import_v1.py"
+    gen.write_text("from pipeline.clean import no_such_function\n\ndef test_a():\n    assert True\n")
+    sheet = empty_sheet(tmp_path)
+    pf.main([str(gen), "--model", "m", "--module", "pipeline.clean", "--sheet", str(sheet)])
+    (row,) = csv.DictReader(open(sheet))
+    assert row["ran_green_unmodified"] == "no"

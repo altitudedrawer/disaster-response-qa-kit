@@ -1,0 +1,43 @@
+<!-- prompt_version: v1 -- if you change this template, bump the version and record it in the review sheet -->
+You are a senior Python test engineer. Write pytest unit tests for the module `pipeline.join`.
+
+You are given ONLY the public signatures and docstrings below, not the implementations.
+Test the behaviour the docstrings promise. If a docstring is ambiguous, write the test you
+think is most reasonable and add a comment starting with `# ASSUMPTION:` explaining it.
+
+```python
+def cities_near_events(events: gpd.GeoDataFrame, cities: gpd.GeoDataFrame, radius_km: float=DEFAULT_RADIUS_KM) -> gpd.GeoDataFrame:
+    """
+    One row per event (epicentre point) with city_count, city_names ("; "-joined,
+    nearest first), nearest_city and nearest_km. Events with no cities keep
+    city_count = 0 -- a LEFT join, so no quake silently disappears.
+
+    Inputs (both EPSG:4326 GeoDataFrames with Point geometry):
+      events: columns id, mag, place, time, lon, lat, depth_km (e.g. CleanResult.events)
+      cities: column 'name'; optional 'label'
+    radius_km defaults to 100. A city counts if its geodesic distance is <= radius_km.
+    Output columns, in order: id, mag, place, time, lon, lat, depth_km, city_count,
+    city_names, nearest_city, nearest_km (rounded to 0.01; NaN when no city), geometry.
+    city_names is "" when there are no cities.
+
+    City names come from the 'label' column ("Aberdeen (United Kingdom)") when present.
+    city_names is a string, not a list, because ArcGIS feature layers and
+    shapefiles can't store list-valued fields.
+    """
+    ...
+```
+
+Rules:
+1. Output a single Python file, with no prose before or after it.
+2. Import from `pipeline.join` exactly as named above. Do not invent functions, parameters or
+   return fields that are not shown.
+3. Tests must be deterministic and offline: no network, no real files outside pytest's `tmp_path`,
+   no current-time dependence, no randomness without a fixed seed.
+4. Prefer small hand-built inputs whose correct answer you can justify. For geographic distances,
+   build points with `pyproj.Geod(ellps="WGS84").fwd(...)` so the distance is known by construction.
+5. Cover: normal cases, boundaries (inclusive/exclusive limits), empty input, invalid input,
+   and any edge case a docstring mentions explicitly.
+6. Name every test `test_<function>_<behaviour>`. Put a one-line docstring in each test saying
+   what it checks.
+7. Aim for 8–15 tests. Quality over quantity: no duplicate tests that differ only in a constant.
+

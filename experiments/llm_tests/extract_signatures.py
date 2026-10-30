@@ -28,10 +28,12 @@ def extract(path: Path, only: set[str] | None = None) -> str:
             ret = f" -> {ast.unparse(node.returns)}" if node.returns else ""
             header = f"def {node.name}({ast.unparse(node.args)}){ret}:"
         else:
-            header = f"class {node.name}:"
+            bases = ", ".join(ast.unparse(b) for b in node.bases)
+            header = f"class {node.name}({bases}):" if bases else f"class {node.name}:"
         body = "\n".join("    " + line if line else "" for line in doc.splitlines())
         # for (data)classes, show annotated fields so the LLM doesn't have to guess attributes
-        fields = [f"    {ast.unparse(n)}" for n in getattr(node, "body", []) if isinstance(n, ast.AnnAssign)]
+        fields = ([f"    {ast.unparse(n)}" for n in node.body if isinstance(n, ast.AnnAssign)]
+                  if isinstance(node, ast.ClassDef) else [])
         tail = "\n".join(fields) if fields else "    ..."
         chunks.append(f'{header}\n    """\n{body}\n    """\n{tail}')
     if not chunks:
