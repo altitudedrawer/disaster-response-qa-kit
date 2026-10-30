@@ -16,6 +16,13 @@ from .ingest import EVENT_COLUMNS
 
 @dataclass
 class CleanResult:
+    """Output of clean_events.
+
+    events:  valid events as a GeoDataFrame (EPSG:4326, Point geometry, same columns as the input
+             plus geometry; 'time'/'updated' converted to UTC datetimes)
+    dropped: rule name -> number of rows that rule removed (all five keys always present)
+    rows_in: number of input rows
+    """
     events: gpd.GeoDataFrame
     dropped: dict[str, int] = field(default_factory=dict)
     rows_in: int = 0
@@ -29,6 +36,10 @@ def _empty_events() -> gpd.GeoDataFrame:
 
 def clean_events(df: pd.DataFrame, min_mag: float = DEFAULT_MIN_MAG) -> CleanResult:
     """Return valid events with magnitude >= min_mag as a point GeoDataFrame (WGS84).
+
+    `df` is the output of ingest.parse_usgs_geojson, with columns
+    id, mag, place, time, updated, lon, lat, depth_km, event_type
+    (time/updated are epoch milliseconds, as in the USGS feed).
 
     Rules, applied in this order:
       1. null_magnitude       - mag missing or not a number

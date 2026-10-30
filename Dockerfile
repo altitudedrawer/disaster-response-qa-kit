@@ -31,6 +31,7 @@ COPY --chown=app:app --chmod=a+rX pyproject.toml ./
 COPY --chown=app:app --chmod=a+rX src/ src/
 COPY --chown=app:app --chmod=a+rX tests/ tests/
 COPY --chown=app:app --chmod=a+rX scripts/ scripts/
+COPY --chown=app:app --chmod=a+rX experiments/ experiments/
 COPY --chmod=0755 docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 USER app
 
