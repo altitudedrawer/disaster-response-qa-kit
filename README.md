@@ -1,5 +1,7 @@
 # DisasterResponse QA Kit
 
+[![CI](https://github.com/altitudedrawer/disaster-response-qa-kit/actions/workflows/ci.yml/badge.svg)](https://github.com/altitudedrawer/disaster-response-qa-kit/actions/workflows/ci.yml)
+
 **Question:** which cities are within 100 km of M5+ earthquakes?
 
 USGS earthquakes → clean → geodesic 100 km buffer → spatial join with city points → GeoJSON
@@ -100,7 +102,7 @@ has **not been run yet** (TODO: run it and record the result here).
 | File | What it does | Status |
 |---|---|---|
 | `Dockerfile`, `docker/entrypoint.sh`, `.dockerignore` | One image; `test` (default), `demo`, `pipeline` | **VERIFIED**: built and ran all 3 commands (sandbox, x86_64). Image is 615 MB on disk, 142 MB compressed. Runs as non-root; a fake `.env` in the build context is absent from the image |
-| `.github/workflows/ci.yml` | pytest on 3.11 + 3.13, JUnit artifacts, Docker build + tests in image | **SYNTAX-CHECKED** (actionlint 1.7.12). Each step's commands were run locally (3.11 and 3.13 suites pass). TODO: confirm the first real run on GitHub |
+| `.github/workflows/ci.yml` | pytest on 3.11 + 3.13, JUnit artifacts, Docker build + tests in image | **VERIFIED** on GitHub: run CI #1 (commit `8826824`, 2026-10-29) passed in 1m 0s. Also lint-clean with actionlint 1.7.12 |
 | `Jenkinsfile`, `jenkins/Dockerfile`, `docs/JENKINS.md` | checkout → install → test → (contract) → build image → test in image | **VERIFIED** in Jenkins LTS in Docker: a green build (81 tests in the report) and a red build (failing test blocks the image build). Contract stage UNTESTED |
 | `ansible/deploy.yml` | Get image, run the container once, assert success | **VERIFIED** with a local image, as a non-root user. `drqa_pull=true` (registry) path UNTESTED |
 
