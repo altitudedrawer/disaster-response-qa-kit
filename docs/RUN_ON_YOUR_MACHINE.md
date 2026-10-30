@@ -103,5 +103,27 @@ FEATURE_SERVICE_URL=https://services9.arcgis.com/RHVPKKiFTONKtxq3/arcgis/rest/se
 CONTRACT_EXPECTED_FIELDS=id,mag,place CONTRACT_LOCAL_GEOJSON= python -m pytest tests/contract -v
 ```
 
+## Phase 4: Docker, CI, Jenkins, Ansible
+
+```bash
+# Docker (needs Docker Desktop running)
+docker build -t drqa:dev .
+docker run --rm drqa:dev                                   # test suite (default command)
+docker run --rm drqa:dev demo                              # pipeline on fixtures, offline
+docker run --rm -v "$PWD/output:/app/output" drqa:dev pipeline   # real data, needs internet (~20 s)
+#   on Linux add: --user "$(id -u):$(id -g)"   (Docker Desktop on Mac handles ownership for you)
+
+# GitHub Actions: just push. Then open the repo's "Actions" tab and check the "CI" run.
+git push
+
+# Jenkins: see docs/JENKINS.md
+
+# Ansible (optional)
+python3 -m pip install ansible-core docker
+ansible-galaxy collection install -r ansible/requirements.yml
+ansible-playbook -i ansible/inventory.ini ansible/deploy.yml
+#   If it can't find Docker on macOS:  export DOCKER_HOST=unix://$HOME/.docker/run/docker.sock
+```
+
 ## Commands added in later phases
 TODO: filled in as each phase lands.

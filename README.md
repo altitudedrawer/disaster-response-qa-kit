@@ -75,6 +75,14 @@ Found by profiling the real downloads before running the pipeline:
    All are covered by the oracle check above.
 7. **Mixed magnitude types** (`mww` 1,127, `mb` 823, `ml` 15, others 13): "M5" means slightly
    different things across scales. Not corrected; noted as a limitation.
+8. **Docker: `entrypoint.sh: Permission denied`.** Source files on the host were mode 0600,
+   `COPY` preserves modes, and `chmod +x` adds execute but not *read*, so the non-root user
+   couldn't run the script. *Fix:* `COPY --chown/--chmod` explicitly.
+9. **Docker: can't write a mounted `output/` on Linux.** The container's uid 10001 doesn't own
+   the host folder. *Fix:* `data/` and `output/` are mode 1777 in the image, and the docs (and the
+   Ansible playbook) run the container as the host user. Verified with an arbitrary uid.
+10. **Jenkins: `/build` returns HTTP 400 after the first run,** because the job is now
+    parameterized. Use `/buildWithParameters`.
 
 ## Publishing to ArcGIS (Phase 3)
 
@@ -86,6 +94,15 @@ Steps: `docs/RUN_ON_YOUR_MACHINE.md`. Concepts: `docs/CONCEPTS.md`.
 Status: dry-run and the publish call sequence (against fake `arcgis` objects, plus a
 signature check against the real 2.4.4 package) are tested. The real publish to ArcGIS Online
 has **not been run yet** (TODO: run it and record the result here).
+
+## DevOps (Phase 4)
+
+| File | What it does | Status |
+|---|---|---|
+| `Dockerfile`, `docker/entrypoint.sh`, `.dockerignore` | One image; `test` (default), `demo`, `pipeline` | **VERIFIED**: built and ran all 3 commands (sandbox, x86_64). Image is 615 MB on disk, 142 MB compressed. Runs as non-root; a fake `.env` in the build context is absent from the image |
+| `.github/workflows/ci.yml` | pytest on 3.11 + 3.13, JUnit artifacts, Docker build + tests in image | **SYNTAX-CHECKED** (actionlint 1.7.12). Each step's commands were run locally (3.11 and 3.13 suites pass). TODO: confirm the first real run on GitHub |
+| `Jenkinsfile`, `jenkins/Dockerfile`, `docs/JENKINS.md` | checkout → install → test → (contract) → build image → test in image | **VERIFIED** in Jenkins LTS in Docker: a green build (81 tests in the report) and a red build (failing test blocks the image build). Contract stage UNTESTED |
+| `ansible/deploy.yml` | Get image, run the container once, assert success | **VERIFIED** with a local image, as a non-root user. `drqa_pull=true` (registry) path UNTESTED |
 
 ## Honest limitations (so far)
 

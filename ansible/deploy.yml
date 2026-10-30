@@ -1,0 +1,50 @@
+# Minimal deployment: get the image, run the pipeline container once, check it succeeded.
+#   ansible-galaxy collection install -r ansible/requirements.yml
+#   ansible-playbook -i ansible/inventory.ini ansible/deploy.yml                       # local image drqa:dev
+#   ansible-playbook -i ansible/inventory.ini ansible/deploy.yml \
+#       -e drqa_image=ghcr.io/<you>/disaster-response-qa-kit:latest -e drqa_pull=true    # from a registry
+- name: Deploy DisasterResponse QA Kit container
+  hosts: drqa_hosts
+  gather_facts: true
+  gather_subset: [min]     # gives ansible_facts.user_uid / user_gid of the target host
+  vars:
+    drqa_image: drqa:dev
+    drqa_pull: false          # true = pull from a registry; false = use an image already built on the host
+    drqa_command: demo        # demo (offline) | test | pipeline (needs internet)
+    drqa_output_dir: "{{ playbook_dir }}/../output"
+
+  tasks:
+    - name: Ensure output directory exists
+      ansible.builtin.file:
+        path: "{{ drqa_output_dir }}"
+        state: directory
+        mode: "0755"
+
+    - name: Get the image ({{ 'pull' if drqa_pull else 'local' }})
+      community.docker.docker_image:
+        name: "{{ drqa_image }}"
+        source: "{{ 'pull' if drqa_pull else 'local' }}"
+
+    - name: Run the container ({{ drqa_command }})
+      community.docker.docker_container:
+        name: drqa-{{ drqa_command }}
+        image: "{{ drqa_image }}"
+        command: ["{{ drqa_command }}"]
+        detach: false          # wait for it to finish (it's a batch job, not a server)
+        cleanup: true          # remove the container afterwards, like `docker run --rm`
+        output_logs: true
+        # Run as the host user so files written into the mounted folder are owned by them
+        # (otherwise uid 10001 in the image can't write a host-owned folder on Linux).
+        user: "{{ ansible_facts.user_uid }}:{{ ansible_facts.user_gid }}"
+        volumes:
+          - "{{ drqa_output_dir | realpath }}:/app/output"
+      register: run
+
+    - name: Show container output (last 15 lines)
+      ansible.builtin.debug:
+        msg: "{{ run.container.Output.splitlines()[-15:] }}"
+
+    - name: Fail the play if the container failed
+      ansible.builtin.assert:
+        that: run.status == 0
+        fail_msg: "container exited with status {{ run.status }}"

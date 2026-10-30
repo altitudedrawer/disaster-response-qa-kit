@@ -36,4 +36,6 @@ def main(result_path, cities_path, radius_km=100.0):
 
 
 if __name__ == "__main__":
-    sys.exit(main(*sys.argv[1:3]))
+    if len(sys.argv) not in (3, 4):
+        sys.exit(__doc__)
+    sys.exit(main(sys.argv[1], sys.argv[2], *(float(x) for x in sys.argv[3:4])))
