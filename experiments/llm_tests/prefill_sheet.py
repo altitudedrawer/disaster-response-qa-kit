@@ -154,7 +154,7 @@ def main(argv=None) -> int:
                      "reason_category": "", "ran_green_unmodified": "yes" if n in green else "no",
                      "notes": ""})
     with open(sheet, "a", newline="", encoding="utf-8") as f:
-        csv.DictWriter(f, fieldnames=REQUIRED).writerows(rows)
+        csv.DictWriter(f, fieldnames=REQUIRED, lineterminator="\n").writerows(rows)
     print(f"added {len(rows)} rows ({sum(r['ran_green_unmodified'] == 'yes' for r in rows)} ran green) "
           f"to {sheet.name}; now fill in decision + reason_category for each")
     return 0
