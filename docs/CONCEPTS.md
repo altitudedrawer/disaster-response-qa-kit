@@ -1,5 +1,9 @@
 # Concepts (for someone with no GIS background)
 
+The five core concepts of this project are **geodesic buffers**, **antimeridian handling**,
+**spatial joins**, **Feature Layer vs Feature Service**, and **contract vs unit vs E2E tests**.
+WGS84 vs Web Mercator is included because the other sections depend on it.
+
 ## Feature Service vs Feature Layer
 
 A **feature** is one real-world thing stored as a geometry (point, line or polygon) plus
@@ -58,10 +62,36 @@ A **buffer** is the area within a given distance of a geometry. Around a point i
 
 Two edge cases we handle:
 
-- A buffer near longitude ±180 (the antimeridian) is cut into two pieces, because a
-  polygon can't wrap around the edge of the coordinate system.
+- A buffer near longitude ±180 is cut into two pieces (next section).
 - A polygon with 64 corners sits slightly *inside* the true circle, so we push the corners
   out a little for the search and then do an exact distance check.
+
+## Antimeridian handling
+
+The **antimeridian** is the line at longitude ±180°, in the Pacific. It crosses Fiji and runs
+past the Tonga–Kermadec subduction zone, one of the most seismically active places on Earth.
+On the globe nothing special happens there: 179.9°E and 179.9°W are about 22 km apart at the
+equator. **In the numbers, though, they are 359.8 apart**, and that breaks naive geometry code:
+
+- A 100 km buffer around an epicentre at 179.5°E reaches 180.4°E, which doesn't exist; the
+  correct coordinate is −179.6°. Written naively, the polygon's points jump from +179.x to
+  −179.x, and the polygon connecting them stretches **the wrong way round the world**: a band
+  ~359° wide that "contains" almost everything.
+- So a quake near Fiji would match cities in Africa, or (with other naive fixes) miss the city
+  right across the line.
+
+What `geo.py` does:
+
+1. Build the ring of points with **continuous** longitudes around the centre (allow 180.4
+   instead of −179.6), so the polygon is the right small shape.
+2. **Cut** it at ±180, and shift the overflowing piece back by 360° → a `MultiPolygon` with
+   one piece on each side, all coordinates valid.
+
+Tests check it's split, valid, within ±180, that it covers both sides but not longitude 0, and
+that cutting **loses no area** (same area as an identical buffer at longitude 0). In the real
+1-year data, 29 epicentres are within 1° of ±180. One of the fixture events is a synthetic
+quake at −179.95° whose nearest city, Labasa in Fiji, is at +179.38°, about 71 km away
+across the line.
 
 ## Spatial join
 
@@ -83,3 +113,30 @@ Then we:
 
 On the real 1-year data, the indexed join took 0.19 s. A brute-force check of all
 14.5 million pairs took 5.5 s and agreed with the join on every event.
+
+## Contract vs unit vs E2E tests
+
+Tests differ in **how much of the real system they include**, and therefore in speed,
+reliability and what a failure tells you.
+
+| | Unit | End-to-end (E2E) | Contract |
+|---|---|---|---|
+| **Tests** | one function in isolation | the whole program, input file → output file | a boundary with a system **we don't control** (the ArcGIS Feature Service) |
+| **Example here** | `test_min_magnitude_is_inclusive`: M5.0 kept, M4.99 dropped | `test_matches_brute_force_oracle`: CLI on fixtures, every event checked against an independent calculation | `test_expected_fields_present`, `test_response_time_under_budget`, `test_invalid_query_is_reported_as_error_payload` |
+| **Data** | tiny hand-built inputs | committed fixtures (100 events, 200 cities) | a live service over the network |
+| **Speed / reliability** | milliseconds, deterministic | well under a second here, deterministic | seconds; can fail because of the network |
+| **A failure means** | this function is wrong | something in the chain is wrong | the service changed, or our assumptions about it are wrong |
+| **When it runs** | every push | every push | only when `FEATURE_SERVICE_URL` is set (auto-skip otherwise) |
+
+Why have all three:
+
+- **Unit tests** pinpoint *where* a bug is, but every unit can pass while the pieces don't fit together.
+- **E2E tests** catch wiring mistakes, but tell you less about *which* part broke.
+- **Contract tests** check things neither can: the published layer is a different system, with
+  its own field types, Web Mercator storage, and a habit of reporting errors as **HTTP 200 with
+  an error body**. A contract test pins those expectations, so if the provider changes, a
+  specific test fails instead of downstream code misbehaving silently.
+
+A fourth idea used here, **mutation testing**, tests the *tests*: inject a deliberate bug (e.g.
+skip the antimeridian cut) and check that some test fails. Our suite catches 13 of 13 injected
+bugs; a passing test that catches none of them may not be checking much.
