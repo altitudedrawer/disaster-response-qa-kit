@@ -16,6 +16,8 @@ run on a review sheet you filled in yourself. Nothing here is pre-filled.
 | `prefill_sheet.py` | Runs a generated file and appends one row per test (measured facts only; your decision columns stay blank) |
 | `generated/` | Raw LLM output, saved **unmodified** (this is your evidence trail) |
 | `review_sheet.csv` | One row per generated test, filled in by you |
+| `review.py` | Interactive review: shows each test, the docstring the LLM saw and the bugs it catches; records your decision and enforces the rules as you go |
+| `mutation_check.py`, `mutation_results.csv` | Which tests catch which of 13 injected bugs (measured facts to inform the review) |
 | `acceptance_rate.py` | Computes rates, a 95% interval and reason breakdowns from the sheet |
 
 ## Protocol (decide the rules before you look at any output)
@@ -37,7 +39,8 @@ run on a review sheet you filled in yourself. Nothing here is pre-filled.
    python experiments/llm_tests/prefill_sheet.py experiments/llm_tests/generated/<file>.py \
        --model "<exact model name>" --module pipeline.clean
    ```
-6. **Review each test**, one row per test in `review_sheet.csv`:
+6. **Review each test**, one row per test in `review_sheet.csv`. Easiest: `python experiments/llm_tests/review.py`
+   (saves after every answer; `q` to stop, run again to resume; `--redo <test_id>` to change one).
    - `accepted`: unmodified, passes, and checks something the docstring promises
    - `edited`: worth keeping but needed a change. Pick the main reason (`wrong_expected_value`, `style_only`, ...)
    - `rejected`: not worth keeping. Pick why (`hallucinated_api`, `trivial`, `duplicate`, ...)
@@ -52,7 +55,16 @@ run on a review sheet you filled in yourself. Nothing here is pre-filled.
    Paste the output below as-is, with model and date. Copy the tests you keep (edited version)
    into `tests/`, so CI runs them from then on.
 
-Optional stronger signal: re-run the Phase 1 mutation check (break the code on purpose,
+Optional stronger signal, now automated (`mutation_check.py`, 13 documented mutants M01–M13):
+```bash
+python experiments/llm_tests/mutation_check.py experiments/llm_tests/generated/*_v1.py   # -> mutation_results.csv
+python experiments/llm_tests/mutation_check.py tests/ --out output/mutation_ours.csv        # our suite, for comparison
+```
+`mutation_results.csv` has one row per review-sheet `test_id` (same format) with the mutants each
+test kills. Killing no mutant is NOT proof a test is useless (it may check behaviour none of the 13
+mutants touch), but it's a strong hint to look hard at questions 3 and 4 of the review.
+
+Original idea (Phase 1): re-run the mutation check (break the code on purpose,
 e.g. remove the antimeridian split) and record whether the LLM's tests catch each mutant.
 "Passes on correct code" is a weak bar; "fails on broken code" is the real one.
 
