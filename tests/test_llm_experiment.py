@@ -243,3 +243,19 @@ def test_v1_rules_rate_reported_alongside(tmp_path):
             {"decision": "edited", "reason_category": "style_only", "ran_green_unmodified": "no"}]
     o = ar.summarize(ar.load(sheet(tmp_path, rows)))["overall"]
     assert o["acceptance_rate"] == 0.5 and o["acceptance_rate_v1_rules"] == 0.25 and o["found_real_bug"] == 1
+
+
+mc = load_module("mutation_check")
+
+
+@pytest.mark.parametrize("mid,fname,desc,old,new", mc.MUTANTS, ids=[m[0] for m in mc.MUTANTS])
+def test_every_mutant_still_applies_exactly_once(mid, fname, desc, old, new):
+    """Drift guard: if the code changes and a mutant's pattern no longer matches exactly once,
+    the mutation check would silently test nothing for that mutant."""
+    src = (Path(__file__).resolve().parents[1] / "src" / "pipeline" / fname).read_text()
+    assert src.count(old) == 1 and old != new
+
+
+def test_sheet_id_matches_review_sheet_format():
+    assert mc.sheet_id("dsv41flash_clean_v1", "test_a[x-1]") == "dsv41flash_clean_v1.py::test_a"
+    assert mc.sheet_id("dsv41flash_geo_v1.TestBuffer", "test_b") == "dsv41flash_geo_v1.py::TestBuffer::test_b"
