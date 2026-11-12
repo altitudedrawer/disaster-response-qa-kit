@@ -30,7 +30,11 @@ _WEST_OVERFLOW = box(-540, -90, -180, 90)
 
 
 def geodesic_distance_m(lon1, lat1, lon2, lat2) -> np.ndarray:
-    """Ellipsoidal (WGS84) distance in metres. Accepts scalars or arrays."""
+    """Ellipsoidal (WGS84) distance in metres. Accepts scalars or arrays, mixed freely:
+    inputs are broadcast like numpy (one point vs. many points works)."""
+    # pyproj needs equal-length inputs; without this, scalar-vs-array raised GeodError.
+    # (Found by an LLM-generated test in experiments/llm_tests, 2026-10-30.)
+    lon1, lat1, lon2, lat2 = np.broadcast_arrays(*(np.asarray(v, dtype=float) for v in (lon1, lat1, lon2, lat2)))
     _, _, dist = GEOD.inv(lon1, lat1, lon2, lat2)
     return np.asarray(dist, dtype=float)
 

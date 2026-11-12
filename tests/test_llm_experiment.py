@@ -35,9 +35,11 @@ def sheet(tmp_path, rows):
     return p
 
 
-def test_shipped_review_sheet_is_empty():
-    """Honesty guard: results are filled in by the human, never pre-populated."""
-    assert ar.load(EXP / "review_sheet.csv") == []
+def test_real_review_sheet_is_well_formed():
+    """The real sheet (filled in by the human) must always be valid; rows still awaiting review
+    are allowed so the sheet can be committed mid-review without breaking CI.
+    (Replaced the original 'sheet must be empty' guard once the experiment actually ran.)"""
+    ar.load(EXP / "review_sheet.csv", allow_unreviewed=True)
 
 
 def test_rates_on_known_counts(tmp_path):
@@ -84,7 +86,7 @@ def test_duplicate_test_ids_rejected(tmp_path):
 
 
 def test_cli_exit_codes(tmp_path, capsys):
-    assert ar.main([str(EXP / "review_sheet.csv")]) == 1                 # empty -> no number
+    assert ar.main([str(empty_sheet(tmp_path))]) == 1                    # empty -> no number
     assert ar.main([str(sheet(tmp_path, [{"decision": "accepted"}]))]) == 0
     assert "acceptance=100.0%" in capsys.readouterr().out
     assert ar.main([str(sheet(tmp_path, [{"decision": "nope"}]))]) == 2
@@ -161,3 +163,83 @@ def test_prefill_handles_file_that_cannot_import(tmp_path):
     pf.main([str(gen), "--model", "m", "--module", "pipeline.clean", "--sheet", str(sheet)])
     (row,) = csv.DictReader(open(sheet))
     assert row["ran_green_unmodified"] == "no"
+
+
+def test_prefill_strips_single_fenced_block_and_keeps_raw(tmp_path):
+    """Real case (2026-10-30): the saved reply started with ```python and ended with ```."""
+    gen = tmp_path / "m_clean_v1.py"
+    raw_text = "```python\n" + FAKE_GENERATED.strip() + "\n```"
+    gen.write_text(raw_text)
+    sheet = empty_sheet(tmp_path)
+    assert pf.main([str(gen), "--model", "m", "--module", "pipeline.clean", "--sheet", str(sheet)]) == 0
+    assert not gen.read_text().lstrip().startswith("```")
+    assert (tmp_path / "m_clean_v1.raw.md").read_text() == raw_text      # evidence kept untouched
+    assert len(list(csv.DictReader(open(sheet)))) == 4
+
+
+def test_prefill_refuses_prose_or_multiple_blocks(tmp_path, capsys):
+    gen = tmp_path / "m_clean_v1.py"
+    gen.write_text("Here are your tests:\n```python\ndef test_a():\n    assert True\n```\n")
+    assert pf.main([str(gen), "--model", "m", "--module", "pipeline.clean",
+                    "--sheet", str(empty_sheet(tmp_path))]) == 2
+    assert "outside them" in capsys.readouterr().err
+    assert gen.read_text().startswith("Here are")                          # file left untouched
+
+
+@pytest.mark.parametrize("bad", ["4.1flash_clean_v1.py", "my-model_clean_v1.py", "9x_clean_v1.py"])
+def test_prefill_refuses_unimportable_file_names(tmp_path, capsys, bad):
+    """Real case: '4.1flash_clean_v1.py' -- pytest can't import a module name with a dot,
+    so every test would have been wrongly recorded as not green."""
+    gen = tmp_path / bad
+    gen.write_text("def test_a():\n    assert True\n")
+    sheet = empty_sheet(tmp_path)
+    assert pf.main([str(gen), "--model", "m", "--module", "pipeline.clean", "--sheet", str(sheet)]) == 2
+    err = capsys.readouterr().err
+    assert "can't be imported" in err and "mv " in err
+    assert list(csv.DictReader(open(sheet))) == []                          # nothing recorded
+
+
+def test_prefill_refuses_without_project_packages(tmp_path, monkeypatch, capsys):
+    """Real case: plain Homebrew python without geopandas -> every test would error on import."""
+    real = importlib.util.find_spec
+    monkeypatch.setattr(pf.importlib.util, "find_spec",
+                        lambda name, *a: None if name == "geopandas" else real(name, *a))
+    gen = tmp_path / "m_clean_v1.py"
+    gen.write_text("def test_a():\n    assert True\n")
+    assert pf.main([str(gen), "--model", "m", "--module", "pipeline.clean",
+                    "--sheet", str(empty_sheet(tmp_path))]) == 2
+    assert "source .venv/bin/activate" in capsys.readouterr().err
+
+
+def test_found_real_bug_rule_v1_1(tmp_path):
+    ok = {"decision": "accepted", "reason_category": "found_real_bug", "ran_green_unmodified": "no",
+          "notes": "code fixed"}
+    assert len(ar.load(sheet(tmp_path, [ok]))) == 1
+    with pytest.raises(ar.SheetError, match="needs notes"):
+        ar.load(sheet(tmp_path, [{**ok, "notes": ""}]))
+    with pytest.raises(ar.SheetError, match="kept unmodified"):
+        ar.load(sheet(tmp_path, [{**ok, "decision": "edited"}]))
+
+
+def test_model_names_differing_only_in_case_are_flagged(tmp_path):
+    """Real case: 'DeepSeek-...' vs 'Deepseek-...' would have split one model into two."""
+    rows = [{"decision": "accepted", "model": "DeepSeek-X"}, {"decision": "accepted", "model": "Deepseek-X"}]
+    with pytest.raises(ar.SheetError, match="spelled differently"):
+        ar.load(sheet(tmp_path, rows))
+
+
+def test_unreviewed_rows_allowed_only_when_asked(tmp_path):
+    p = sheet(tmp_path, [{"decision": ""}])
+    assert len(ar.load(p, allow_unreviewed=True)) == 1
+    with pytest.raises(ar.SheetError, match="not reviewed yet"):
+        ar.load(p)
+
+
+def test_v1_rules_rate_reported_alongside(tmp_path):
+    rows = [{"decision": "accepted"},
+            {"decision": "accepted", "reason_category": "found_real_bug", "ran_green_unmodified": "no",
+             "notes": "fixed"},
+            {"decision": "rejected", "reason_category": "trivial"},
+            {"decision": "edited", "reason_category": "style_only", "ran_green_unmodified": "no"}]
+    o = ar.summarize(ar.load(sheet(tmp_path, rows)))["overall"]
+    assert o["acceptance_rate"] == 0.5 and o["acceptance_rate_v1_rules"] == 0.25 and o["found_real_bug"] == 1

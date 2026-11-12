@@ -73,5 +73,7 @@ def cities_near_events(events: gpd.GeoDataFrame, cities: gpd.GeoDataFrame,
     out = events.merge(agg, on="id", how="left")
     out["city_count"] = out["city_count"].fillna(0).astype(int)
     out["city_names"] = out["city_names"].fillna("")
-    out["nearest_km"] = pd.to_numeric(out["nearest_km"]).round(2)
+    # Python's round() is correctly rounded; numpy/pandas .round(2) uses a fast method that
+    # can be off at half-way values (12.345 -> 12.34). Found by an LLM-generated test, 2026-10-30.
+    out["nearest_km"] = pd.to_numeric(out["nearest_km"]).map(lambda v: v if pd.isna(v) else round(float(v), 2))
     return gpd.GeoDataFrame(out[OUTPUT_COLUMNS], geometry=out.geometry, crs=WGS84)

@@ -5,6 +5,8 @@
 
 Definitions (decided BEFORE running the experiment, so they can't be bent to fit results):
   accepted : kept exactly as generated; it ran green unmodified AND tests something real
+             (v1.1 exception: reason found_real_bug = failed only because OUR code was wrong; the
+              test is still unmodified and the code was fixed)
   edited   : kept after changes (wrong expected value fixed, import fixed, assertion tightened...)
   rejected : thrown away
   acceptance_rate = accepted / total          usable_rate = (accepted + edited) / total
@@ -36,6 +38,8 @@ REASONS = {
     "needs_network_or_io": "breaks the offline rule",
     "style_only": "only naming/formatting changed (edited)",
     "other": "explain in notes",
+    # v1.1 (added 2026-10-30, AFTER seeing results; see README "Protocol amendments"):
+    "found_real_bug": "failed only because the code under test was wrong; test kept unmodified, code fixed",
 }
 
 
@@ -54,7 +58,7 @@ def wilson(k: int, n: int, z: float = 1.96) -> tuple[float, float]:
     return (max(0.0, centre - half), min(1.0, centre + half))
 
 
-def load(path: Path) -> list[dict]:
+def load(path: Path, allow_unreviewed: bool = False) -> list[dict]:
     with open(path, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
         missing = [c for c in REQUIRED if c not in (reader.fieldnames or [])]
@@ -72,17 +76,31 @@ def load(path: Path) -> list[dict]:
             problems.append(f"line {i}: duplicate test_id {r['test_id']!r}")
         seen.add(r["test_id"])
         if not r["decision"]:
-            problems.append(f"line {i}: {r['test_id']}: not reviewed yet (decision is blank)")
+            if not allow_unreviewed:
+                problems.append(f"line {i}: {r['test_id']}: not reviewed yet (decision is blank)")
         elif r["decision"] not in DECISIONS:
             problems.append(f"line {i}: decision must be one of {DECISIONS}, got {r['decision']!r}")
         if r["decision"] and r["reason_category"] not in REASONS:
             problems.append(f"line {i}: reason_category {r['reason_category']!r} not in {sorted(REASONS)}")
         if r["ran_green_unmodified"] not in ("yes", "no"):
             problems.append(f"line {i}: ran_green_unmodified must be yes/no")
-        if r["decision"] == "accepted" and r["ran_green_unmodified"] == "no":
-            problems.append(f"line {i}: 'accepted' requires ran_green_unmodified=yes (else it's 'edited')")
+        if r["decision"] == "accepted" and r["ran_green_unmodified"] == "no" \
+                and r["reason_category"] != "found_real_bug":
+            problems.append(f"line {i}: 'accepted' requires ran_green_unmodified=yes (else it's 'edited'), "
+                            "unless reason_category is found_real_bug (v1.1)")
+        if r["reason_category"] == "found_real_bug" and r["decision"] != "accepted":
+            problems.append(f"line {i}: found_real_bug means the test was kept unmodified -> decision 'accepted'")
+        if r["reason_category"] == "found_real_bug" and not r["notes"]:
+            problems.append(f"line {i}: found_real_bug needs notes (what was wrong in the code, what fixed it)")
         if r["reason_category"] == "other" and not r["notes"]:
             problems.append(f"line {i}: reason_category 'other' needs notes")
+    by_lower = defaultdict(set)
+    for r in rows:
+        by_lower[r["model"].lower()].add(r["model"])
+    for spellings in by_lower.values():
+        if len(spellings) > 1:
+            problems.append(f"model name spelled differently in different rows: {sorted(spellings)} "
+                            "(they would be counted as separate models)")
     if problems:
         raise SheetError("review sheet has problems:\n  " + "\n  ".join(problems))
     return rows
@@ -99,6 +117,11 @@ def summarize(rows: list[dict]) -> dict:
             "acceptance_ci95": [lo, hi],
             "usable_rate": (c["accepted"] + c["edited"]) / n if n else None,
             "ran_green_unmodified": sum(r["ran_green_unmodified"] == "yes" for r in rs),
+            # v1.1 transparency: how many accepted rows rely on the found_real_bug amendment,
+            # and the acceptance rate under the original v1 rules (those rows not accepted).
+            "found_real_bug": sum(r["reason_category"] == "found_real_bug" for r in rs),
+            "acceptance_rate_v1_rules": ((c["accepted"] - sum(r["reason_category"] == "found_real_bug"
+                                          for r in rs)) / n) if n else None,
         }
     out = {"overall": block(rows)}
     for key in ("model", "prompt_version", "module", "target_function"):
@@ -116,7 +139,10 @@ def render(s: dict) -> str:
         lo, hi = b["acceptance_ci95"]
         return (f"{name:<28} n={b['total']:<4} acc={b['accepted']:<3} edit={b['edited']:<3} rej={b['rejected']:<3} "
                 f"acceptance={b['acceptance_rate']:.1%} (95% CI {lo:.1%}-{hi:.1%})  usable={b['usable_rate']:.1%}")
-    out = [line("OVERALL", s["overall"])]
+    o = s["overall"]
+    out = [line("OVERALL", o),
+           f"{'':<28} found_real_bug={o['found_real_bug']}  acceptance under original v1 rules="
+           f"{o['acceptance_rate_v1_rules']:.1%}"]
     for key in ("model", "prompt_version", "module", "target_function"):
         out.append(f"\n-- by {key}")
         out += [line("  " + g, b) for g, b in s[f"by_{key}"].items()]

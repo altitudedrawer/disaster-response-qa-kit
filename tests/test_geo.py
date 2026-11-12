@@ -78,3 +78,13 @@ def test_prefilter_buffer_has_no_false_negatives_at_the_edge(lat):
     az = np.arange(0, 360, 1.0)
     xs, ys, _ = GEOD.fwd(np.full(az.size, 10.0), np.full(az.size, lat), az, np.full(az.size, R - 10))
     assert all(poly.contains(Point(x, y)) for x, y in zip(xs, ys))
+
+
+def test_distance_broadcasts_scalar_against_array():
+    """Regression (found by an LLM-generated test, 2026-10-30): the docstring promised
+    'scalars or arrays' but scalar-vs-array raised pyproj GeodError."""
+    lons = np.array([0.0, 1.0, 2.0])
+    out = geodesic_distance_m(0.0, 0.0, lons, np.zeros(3))
+    assert out.shape == (3,)
+    assert out[1] == pytest.approx(geodesic_distance_m(0, 0, 1, 0))
+    assert np.ndim(geodesic_distance_m(0, 0, 0, 1)) == 0      # all-scalar still gives a scalar

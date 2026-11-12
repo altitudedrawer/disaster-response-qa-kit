@@ -11,6 +11,8 @@ acceptance_rate.py refuses to compute anything until every row is reviewed.
 import argparse
 import ast
 import csv
+import importlib.util
+import re
 import subprocess
 import sys
 import tempfile
@@ -30,7 +32,55 @@ TARGETS = {  # module -> public functions the prompts cover
 }
 
 
-def test_names(path: Path) -> list[str]:
+class PrefillError(Exception):
+    pass
+
+
+FENCE = re.compile(r"^\s*```")
+
+
+def check_environment() -> None:
+    """Without the project's packages every generated test errors on import, and the sheet
+    would silently record them all as 'not green'. Refuse instead."""
+    missing = [m for m in ("pytest", "geopandas", "pyproj", "shapely") if importlib.util.find_spec(m) is None]
+    if missing:
+        raise PrefillError(f"{sys.executable} is missing {missing}. Activate the project environment "
+                           "first:  source .venv/bin/activate   (setup: docs/RUN_ON_YOUR_MACHINE.md)")
+
+
+def check_filename(path: Path) -> None:
+    """pytest imports test files as modules, so the name must be a valid Python identifier."""
+    if not path.stem.isidentifier():
+        fixed = re.sub(r"\W", "", path.stem)
+        fixed = fixed if fixed[:1].isalpha() else "m" + fixed
+        raise PrefillError(f"file name {path.name!r} can't be imported by pytest (dots, dashes, spaces "
+                           f"or a leading digit). Rename it, e.g.:  mv {path} {path.with_name(fixed + '.py')}")
+
+
+def strip_fences(path: Path) -> Path | None:
+    """If the file is ONE fenced Markdown code block (```python ... ```) with nothing else
+    outside it, keep the untouched original as <name>.raw.md and rewrite the .py with only
+    the code. Anything else (prose, several blocks) is a data point: refuse and let the human
+    decide."""
+    text = path.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    fences = [i for i, line in enumerate(lines) if FENCE.match(line)]
+    if not fences:
+        return None
+    outside = [line for i, line in enumerate(lines) if (i < fences[0] or i > fences[-1]) and line.strip()]
+    if len(fences) != 2 or outside:
+        raise PrefillError(f"{path.name} has {len(fences)} fence lines and {len(outside)} non-empty lines "
+                           "outside them (prose or several code blocks). Save only the code by hand and "
+                           "mention it in the notes column.")
+    raw = path.with_name(path.stem + ".raw.md")
+    if not raw.exists():
+        raw.write_text(text, encoding="utf-8")
+    path.write_text("\n".join(lines[fences[0] + 1:fences[1]]) + "\n", encoding="utf-8")
+    print(f"removed Markdown fences from {path.name}; untouched original kept as {raw.name}")
+    return raw
+
+
+def collect_test_names(path: Path) -> list[str]:
     """All test functions in the file (incl. inside Test* classes), even if it fails to import."""
     tree = ast.parse(path.read_text(encoding="utf-8"))
     names = []
@@ -78,7 +128,14 @@ def main(argv=None) -> int:
     a = p.parse_args(argv)
 
     path = Path(a.generated_file).resolve()
-    names = test_names(path)
+    try:
+        check_environment()
+        check_filename(path)
+        strip_fences(path)
+    except PrefillError as e:
+        print(f"ERROR: {e}", file=sys.stderr)
+        return 2
+    names = collect_test_names(path)
     if not names:
         print(f"no test functions found in {path}", file=sys.stderr)
         return 2

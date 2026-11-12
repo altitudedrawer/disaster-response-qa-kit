@@ -87,3 +87,11 @@ def test_city_just_inside_radius_between_polygon_vertices_is_found(lat):
     events = make_events([("E", 10.0, lat, 5)])
     cities = make_cities([("Edge", *offset(10.0, lat, half_step, 99.95))])
     assert cities_near_events(events, cities).iloc[0]["city_count"] == 1
+
+
+def test_nearest_km_is_correctly_rounded_at_half_way_values():
+    """Regression (found by an LLM-generated test, 2026-10-30): pandas .round(2) gave 12.34 for
+    a city 12.345 km away; correct rounding of the float 12.345 (=12.3450000000000006...) is 12.35."""
+    events = make_events([("E", 0.0, 0.0, 5)])
+    cities = make_cities([("Near", *offset(0, 0, 90, 12.345))])
+    assert cities_near_events(events, cities).iloc[0]["nearest_km"] == 12.35

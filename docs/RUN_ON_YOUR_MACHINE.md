@@ -131,7 +131,7 @@ Full protocol: `experiments/llm_tests/README.md`. Short version:
 ```bash
 python experiments/llm_tests/extract_signatures.py src/pipeline/clean.py --functions CleanResult clean_events > /tmp/prompt_clean.txt
 #   paste into an LLM, one shot, save output to experiments/llm_tests/generated/<model>_clean_v1.py
-python -m pytest experiments/llm_tests/generated/ -v -p no:cacheprovider
+python -m pytest experiments/llm_tests/generated/*_v1.py -v -p no:cacheprovider   # name files explicitly: they don't match test_*.py
 #   fill experiments/llm_tests/review_sheet.csv (one row per test)
 python experiments/llm_tests/acceptance_rate.py
 ```

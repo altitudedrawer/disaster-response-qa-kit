@@ -68,6 +68,23 @@ e.g. remove the antimeridian split) and record whether the LLM's tests catch eac
   because the extractor showed an LLM would otherwise have to guess. The extractor also stopped
   leaking annotated local variables from function bodies. This is noted so nobody mistakes it for tuning after the fact.
 
+## Protocol amendments
+
+**v1.1, 2026-10-30, made AFTER seeing the generated tests' pass/fail results** (not the review
+decisions, which hadn't started). Prompts were not changed.
+
+- New reason `found_real_bug`: a test that failed *only because the code under test was wrong*
+  may be recorded as `accepted` even though `ran_green_unmodified=no`, if the test is kept
+  unmodified, the code is fixed, and the notes say what was fixed. Why: v1 had no way to credit
+  the most valuable outcome of test generation, finding a real defect.
+- What triggered it (both now fixed in `src/`, each with a regression test in `tests/`):
+  1. `geodesic_distance_m` promised "scalars or arrays" but raised `GeodError` for one point vs.
+     many (`test_geodesic_distance_m_broadcasts_scalar_against_array`).
+  2. `nearest_km` was "rounded to 0.01" with numpy's fast rounding, giving 12.34 for 12.345
+     (correct: 12.35) (`test_cities_near_events_nearest_city_and_km`).
+- Reporting rule: `acceptance_rate.py` prints the `found_real_bug` count and the acceptance
+  rate under the original v1 rules next to the v1.1 rate, so both are always visible.
+
 ## Results
 
 TODO: filled in by Zongze after running the protocol (model, date, `acceptance_rate.py` output, 2–3 sentences of takeaways).
