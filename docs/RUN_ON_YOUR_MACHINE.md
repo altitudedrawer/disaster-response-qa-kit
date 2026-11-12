@@ -41,7 +41,7 @@ docker --version
 
 ```bash
 cd ~/DisasterResponse/disaster-response-qa-kit && source .venv/bin/activate
-python -m pytest -v                       # offline; contract tests auto-skip
+python -m pytest -v                       # offline; contract tests auto-skip (expect 129 passed, 3 skipped)
 PYTHONPATH=src python -m pipeline.run \
   --events tests/fixtures/earthquakes_sample.geojson \
   --cities tests/fixtures/cities_sample.geojson \
@@ -132,9 +132,11 @@ Full protocol: `experiments/llm_tests/README.md`. Short version:
 python experiments/llm_tests/extract_signatures.py src/pipeline/clean.py --functions CleanResult clean_events > /tmp/prompt_clean.txt
 #   paste into an LLM, one shot, save output to experiments/llm_tests/generated/<model>_clean_v1.py
 python -m pytest experiments/llm_tests/generated/*_v1.py -v -p no:cacheprovider   # name files explicitly: they don't match test_*.py
-#   fill experiments/llm_tests/review_sheet.csv (one row per test)
+#   review every test (shows code, docstring, bugs caught; saves each answer; q to stop, rerun to resume):
+python experiments/llm_tests/review.py
 python experiments/llm_tests/acceptance_rate.py
+
+# optional: which tests catch which injected bugs (13 mutants, ~15 s)
+python experiments/llm_tests/mutation_check.py experiments/llm_tests/generated/*_v1.py
 ```
 
-## Commands added in later phases
-TODO: filled in as each phase lands.
